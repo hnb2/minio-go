@@ -167,6 +167,26 @@ func (p *PostPolicy) SetSuccessStatusAction(status string) error {
 	return nil
 }
 
+func (p *PostPolicy) SetUserSpecifiedMetadata(key string, value string) error {
+	if strings.TrimSpace(key) == "" || key == "" {
+		return ErrInvalidArgument("Key is empty")
+	}
+	if strings.TrimSpace(value) == "" || value == "" {
+		return ErrInvalidArgument("Value is empty")
+	}
+	headerName := fmt.Sprintf("x-amz-meta-%s", key)
+	policyCond := policyCondition{
+		matchType: "eq",
+		condition: fmt.Sprintf("$%s", headerName),
+		value:     value,
+	}
+	if err := p.addNewPolicy(policyCond); err != nil {
+		return err
+	}
+	p.formData[headerName] = value
+	return nil
+}
+
 // addNewPolicy - internal helper to validate adding new policies.
 func (p *PostPolicy) addNewPolicy(policyCond policyCondition) error {
 	if policyCond.matchType == "" || policyCond.condition == "" || policyCond.value == "" {
