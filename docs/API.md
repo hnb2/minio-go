@@ -1348,6 +1348,9 @@ policy.SetContentType("image/png")
 // Only allow content size in range 1KB to 1MB.
 policy.SetContentLengthRange(1024, 1024*1024)
 
+// Add a user specified metadata using the key "custom" and value "user"
+policy.SetUserSpecifiedMetadata("custom", "user")
+
 // Get the POST form key/value object:
 
 url, formData, err := minioClient.PresignedPostPolicy(policy)

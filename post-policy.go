@@ -167,6 +167,8 @@ func (p *PostPolicy) SetSuccessStatusAction(status string) error {
 	return nil
 }
 
+// SetUserSpecifiedMetadata - Set user specified metadata as a key/value
+// couple. Can be retrieved through a HEAD request or an event.
 func (p *PostPolicy) SetUserSpecifiedMetadata(key string, value string) error {
 	if strings.TrimSpace(key) == "" || key == "" {
 		return ErrInvalidArgument("Key is empty")
